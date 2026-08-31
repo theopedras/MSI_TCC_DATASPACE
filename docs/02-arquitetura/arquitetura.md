@@ -38,7 +38,8 @@ Interface comum: cada conector expõe discovery() (o que a fonte oferece) e fetc
 
 #### CKANConnector (PBH e MG — mesma implementação, instâncias distintas)
 - Base URL: https://dados.pbh.gov.br/api/3/action/ (espelho ckan.pbh.gov.br)
-- OBRIGATÓRIO: User-Agent de navegador (senão o WAF gocache devolve 403)
+- OBRIGATÓRIO: curl_cffi com impersonação de navegador (o WAF gocache bloqueia por
+  fingerprint TLS, não só por User-Agent — requests/urllib3 recebe 403)
 - discovery(): organization_list, group_list, package_list, tag_list
 - search(): package_search (q, fq, rows/start) — paginação nativa
 - detail(): package_show (metadados do dataset)
@@ -84,7 +85,7 @@ Normalizações no core do dataspace:
 ## 4. Stack
 
 - Python 3.10+
-- HTTP: requests (com User-Agent configurável)
+- HTTP: curl_cffi (impersonação de TLS de navegador — obrigatório p/ WAF gocache)
 - Reprojeção: pyproj (fallback; happy path usa srsName server-side)
 - GTFS-RT: gtfs-realtime-bindings (protobuf)
 - Metadados/catálogo: modelo de dados próprio inspirado em DCAT (pydantic)
@@ -92,7 +93,8 @@ Normalizações no core do dataspace:
 
 ## 5. Decisões decorrentes dos testes (não óbvias)
 
-1. User-Agent obrigatório no CKAN — sem isso o dataspace não funciona.
+1. HTTP precisa de impersonação de TLS (curl_cffi) — requests/urllib3 é bloqueado pelo
+   WAF gocache da PBH mesmo com User-Agent de navegador.
 2. Consulta tabular via Datastore (datastore_search), não via download de CSV.
 3. "Recurso mais recente" é problema real no CKAN (snapshot mensal), precisa de heurística.
 4. Reprojeção pode ser delegada ao GeoServer (srsName), simplificando o OGCConnector.

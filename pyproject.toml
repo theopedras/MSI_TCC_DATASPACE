@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dataspace-bh"
+version = "0.1.0"
+description = "Dataspace de dados abertos — estudo de caso Belo Horizonte (TCC MSI/UFMG)"
+requires-python = ">=3.10"
+dependencies = [
+    "curl_cffi>=0.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+include = ["connectors*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

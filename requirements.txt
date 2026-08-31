@@ -1,0 +1,5 @@
+# runtime
+curl_cffi>=0.7        # HTTP com impersonação de TLS de navegador (WAF gocache da PBH)
+
+# dev / test
+pytest>=8

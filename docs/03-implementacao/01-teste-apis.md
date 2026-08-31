@@ -12,15 +12,19 @@ EXISTE (contradiz o mapeamento, que marcava como "ausência aparente").
 
 Endpoints: https://dados.pbh.gov.br/api/3/action/ (espelho https://ckan.pbh.gov.br/api/3/action/)
 
-### 1.1 WAF exige User-Agent de navegador (ACHADO CRÍTICO)
+### 1.1 WAF "gocache" bloqueia por fingerprint TLS (ACHADO CRÍTICO)
 
 Sem User-Agent, o WAF "gocache" retorna 403 "Acesso Bloqueado". Com User-Agent de
-navegador, responde 200. Todo conector precisa enviar um User-Agent realista.
+navegador via curl, responde 200. PORÉM: o mesmo User-Agent via Python requests/urllib3
+continua recebendo 403 — o bloqueio é por fingerprint TLS (JA3), não só por header.
+O cliente TLS do Python é reconhecido como não-navegador.
 
-    # sem UA -> 403 (HTML "Acesso Bloqueado", servidor gocache)
-    curl https://dados.pbh.gov.br/api/3/action/package_list
-    # com UA -> 200, JSON
-    curl -A "Mozilla/5.0 ..." https://dados.pbh.gov.br/api/3/action/package_list
+Solução: usar curl_cffi com impersonate="chrome" (impersona o TLS de navegador real).
+Confirmado: curl_cffi + chrome -> 200, JSON válido. O conector usa curl_cffi por isso
+(ver connectors/base.py).
+
+    # requests (urllib3) + User-Agent de navegador -> 403 (bloqueado por TLS)
+    # curl_cffi impersonate='chrome'                -> 200
 
 ### 1.2 Escala do portal
 
@@ -148,7 +152,7 @@ fonte "intermitente" até nova verificação.
 
 ## 6. Requisitos técnicos levantados para os conectores
 
-- User-Agent de navegador obrigatório (CKAN PBH)
+- curl_cffi com impersonação de navegador (o WAF gocache bloqueia requests/urllib3 por TLS)
 - Decoder protobuf GTFS-Realtime (lib gtfs-realtime-bindings em Python)
 - Reprojeção: server-side via srsName (BHGEO) ou pyproj (malhas IBGE já vêm em 4326)
 - Seleção de "recurso mais recente" no padrão de snapshot mensal do CKAN

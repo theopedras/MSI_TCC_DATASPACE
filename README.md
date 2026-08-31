@@ -67,7 +67,8 @@ conector.
 
 ## Stack
 
-Python: requests, pyproj (reprojeção), lxml (GML/WFS), pydantic.
+Python: curl_cffi (HTTP com impersonação de navegador — WAF gocache da PBH),
+pyproj (reprojeção), gtfs-realtime-bindings (protobuf), pydantic.
 
 ## Cronograma (13 semanas, entrega 01/12/2026)
 

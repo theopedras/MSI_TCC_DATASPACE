@@ -119,5 +119,8 @@ Pendente:
 - [ ] Verificar endpoints adicionais do PNCP (contratações, atas, licitações) no
       Swagger quando a API voltar
 - [ ] Harvester completo + fichas DCAT das fontes não-CKAN (BHGEO, IBGE, PNCP)
-- [ ] Testes de integração + validação da interoperabilidade (sem 10-11)
 - [ ] API unificada de consulta (para futura UI de demonstração)
+
+Concluído também:
+- [x] Testes de integração (pytest --integration) — 7 cenários contra as APIs reais
+- [x] Validação da interoperabilidade — docs/03-implementacao/02-validacao-interoperabilidade.md

@@ -20,3 +20,6 @@ include = ["connectors*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "integration: testes que batem nas APIs reais (lentos, dependem de rede)",
+]

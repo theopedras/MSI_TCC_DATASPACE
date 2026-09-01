@@ -60,7 +60,8 @@ conector.
 
 - SRID divergente: BHGEO usa EPSG:31983 (SIRGAS 2000 / UTM 23S); fontes nacionais usam
   EPSG:4326 (WGS84) → exige camada de reprojeção.
-- Ausência de GTFS-Realtime: posição de ônibus em formato próprio, não GTFS-RT.
+- Ausência de GTFS-Realtime: corrigido no teste empírico — a BHTRANS publica 3 feeds
+  GTFS-RT (protobuf) via mobilibus; o mapeamento da Etapa 1 marcava como ausente.
 - Falta de identificador único compartilhado (obra/escola) entre secretarias.
 - Fontes sem API REST (TabNet/DATASUS) exigem ETL, fora do princípio "dado na fonte".
 - Rate limit não documentado em várias APIs municipais.
@@ -69,6 +70,21 @@ conector.
 
 Python: curl_cffi (HTTP com impersonação de navegador — WAF gocache da PBH),
 pyproj (reprojeção), gtfs-realtime-bindings (protobuf), pydantic.
+
+## Como usar
+
+    pip install -r requirements.txt
+
+    from dataspace import Dataspace
+    ds = Dataspace()
+
+    ds.academias_por_100k("2021")   # junta BHGEO (WFS) + IBGE (REST) -> 3,28/100k
+    ds.veiculos_ativos()            # lê GTFS-Realtime (protobuf) -> ônibus em trânsito
+
+## Testes
+
+    pytest                    # unitários (rápidos, sem rede)
+    pytest --integration      # + testes de integração contra as APIs reais
 
 ## Cronograma (13 semanas, entrega 01/12/2026)
 

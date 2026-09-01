@@ -101,11 +101,20 @@ Normalizações no core do dataspace:
 5. GTFS-RT exige decoder protobuf — adiciona dependência, mas é padrão internacional.
 6. PNCP é a fonte menos confiável hoje: o conector precisa degradar graciosamente.
 
-## 6. Próximos passos de implementação (cronograma sem 5-9)
+## 6. Status de implementação
 
-1. CKANConnector (prova de conceito da Etapa 1 -> agora generalizar + Datastore)
-2. OGCConnector (WFS GeoJSON + srsName)
-3. RESTConnector (IBGE primeiro; PNCP com retry)
-4. GtfsConnector (estático + RT)
-5. Catálogo DCAT (harvester CKAN + fichas)
-6. Camada de interoperabilidade (normalização + junção via código IBGE)
+Concluído (funcionando, testado com dados reais):
+1. [x] CKANConnector — descoberta + busca + Datastore + latest_resource (snapshot mensal)
+2. [x] OGCConnector — WFS GeoJSON + reprojeção server-side (srsName) + filtro CQL
+3. [x] RESTConnector (IBGE) — Agregados (dados_simples) + Malhas + Localidades
+4. [x] Catálogo DCAT — modelo (pydantic) + CkanHarvester + Catalog (busca)
+5. [x] Camada de interoperabilidade — normalize_ibge_code, to_float, per_100k
+6. [x] Orquestrador Dataspace — junção cross-source (ex.: academias_por_100k cruza
+       BHGEO/WFS com IBGE/REST pelo município)
+
+Pendente:
+- [ ] RESTConnector (PNCP) — com retry/backoff (backend instável)
+- [ ] GtfsConnector — GTFS estático (S3) + GTFS-Realtime (protobuf)
+- [ ] Harvester completo + fichas DCAT das fontes não-CKAN (BHGEO, IBGE, PNCP)
+- [ ] Testes de integração + validação da interoperabilidade (sem 10-11)
+- [ ] API unificada de consulta (para futura UI de demonstração)

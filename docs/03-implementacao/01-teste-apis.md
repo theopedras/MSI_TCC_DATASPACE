@@ -65,20 +65,16 @@ não há recurso "latest" explícito.
 - Consequência: dá para consultar dados tabulares SEM baixar CSV, via API de consulta
   (filtros de campo + busca textual + paginação), mas NÃO via SQL.
 
-### 1.7 GTFS estático e GTFS-RT
+### 1.7 GTFS estático e GTFS-Realtime
 
-- Dataset "gtfs" (org "superintendencia-de-mobilidade"): GTFS estático hospedado em S3
-  (https://s3.amazonaws.com/mobilibus-uploads/gtfs/GTFSBHTRANS.zip), atualizado semanal
-  (Last-Modified: 2026-08-31, no dia do teste).
-- Dataset "gtfs-rt" (ACHADO — o mapeamento afirmava ausência de GTFS-RT): 3 feeds em
-  protobuf GTFS-Realtime, hospedados em realtime4.mobilibus.com com accesskey na URL:
-
-    trip-updates:      http://realtime4.mobilibus.com/web/4ch6j/trip-updates?accesskey=982a57efd77a9462bf1665696fb25984
-    vehicle-positions: http://realtime4.mobilibus.com/web/4ch6j/vehicle-positions?accesskey=982a57efd77a9462bf1665696fb25984
-    alerts:            http://realtime4.mobilibus.com/web/4ch6j/alerts?accesskey=982a57efd77a9462bf1665696fb25984
-
-  vehicle-positions respondeu 200 com 129 KB de protobuf (content-type
-  application/x-google-protobuf). É GTFS-Realtime legítimo.
+- GTFS estático: ZIP em S3 (https://s3.amazonaws.com/mobilibus-uploads/gtfs/GTFSBHTRANS.zip),
+  53,5 MB, atualização semanal (Last-Modified no dia do teste). Download lento deste ambiente
+  (~230 KB/s -> ~4 min) — motiva cache local do estático (muda 1x/semana).
+- GTFS-Realtime EXISTE (corrige o mapeamento): 3 feeds protobuf (trip-updates,
+  vehicle-positions, alerts) em realtime4.mobilibus.com, accesskey na URL.
+- vehicle-positions: ~790-818 veículos em trânsito, responde <1s, protobuf ~100 KB.
+- Atenção: o feed RT exige Accept "application/x-google-protobuf"; com o Accept JSON
+  global (application/json) o servidor devolve 406 Not Acceptable.
 
 ## 2. BHGEO / BHMAP (OGC WMS/WFS)
 

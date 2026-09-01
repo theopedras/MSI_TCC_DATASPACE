@@ -9,6 +9,7 @@ description = "Dataspace de dados abertos — estudo de caso Belo Horizonte (TCC
 requires-python = ">=3.10"
 dependencies = [
     "curl_cffi>=0.7",
+    "gtfs-realtime-bindings>=1.0",
 ]
 
 [project.optional-dependencies]

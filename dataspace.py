@@ -15,6 +15,7 @@ from typing import Any, Optional
 
 from catalog import Catalog, CkanHarvester, Dataset
 from connectors.ckan import CkanConnector
+from connectors.gtfs import GtfsConnector
 from connectors.ogc import OgcConnector
 from connectors.rest import BH_IBGE_CODE, IbgeConnector
 from interoperability import normalize_ibge_code, per_100k, to_float
@@ -31,6 +32,7 @@ class Dataspace:
         self.ckan = CkanConnector()
         self.ogc = OgcConnector()
         self.ibge = IbgeConnector()
+        self.gtfs = GtfsConnector()
         self.catalog = Catalog()
         self.ckan_harvester = CkanHarvester(self.ckan)
 
@@ -84,4 +86,12 @@ class Dataspace:
             "academias": n_academias,
             "academias_por_100k": round(per_100k(n_academias, populacao), 2),
             "fontes": ["BHGEO (WFS, reprojetado)", "IBGE (Agregados)"],
+        }
+
+    def veiculos_ativos(self) -> dict[str, Any]:
+        """Demonstração de tempo real: veículos em trânsito agora (BHTRANS/GTFS-RT)."""
+        posicoes = self.gtfs.vehicle_positions()
+        return {
+            "veiculos_em_transito": len(posicoes),
+            "fonte": "BHTRANS (GTFS-Realtime, protobuf)",
         }

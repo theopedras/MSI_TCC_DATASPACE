@@ -1,5 +1,6 @@
 # runtime
-curl_cffi>=0.7        # HTTP com impersonação de TLS de navegador (WAF gocache da PBH)
+curl_cffi>=0.7                  # HTTP com impersonação de TLS de navegador (WAF gocache da PBH)
+gtfs-realtime-bindings>=1.0     # protobuf GTFS-Realtime (BHTRANS)
 
 # dev / test
 pytest>=8

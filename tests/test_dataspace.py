@@ -30,6 +30,13 @@ def test_populacao_normaliza_codigo_e_converte_valor():
     assert ds.ibge.dados_simples.call_args.args[3] == "3106200"
 
 
+def test_veiculos_ativos_usa_gtfs_rt():
+    ds = Dataspace()
+    ds.gtfs.vehicle_positions = Mock(return_value=[{"vehicle_id": "1"}, {"vehicle_id": "2"}])
+    result = ds.veiculos_ativos()
+    assert result["veiculos_em_transito"] == 2
+
+
 def test_harvest_ckan_respeita_limit():
     ds = Dataspace()
     ds.ckan.package_list = Mock(return_value=["a", "b", "c"])

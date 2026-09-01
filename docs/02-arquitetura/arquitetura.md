@@ -107,14 +107,14 @@ Concluído (funcionando, testado com dados reais):
 1. [x] CKANConnector — descoberta + busca + Datastore + latest_resource (snapshot mensal)
 2. [x] OGCConnector — WFS GeoJSON + reprojeção server-side (srsName) + filtro CQL
 3. [x] RESTConnector (IBGE) — Agregados (dados_simples) + Malhas + Localidades
-4. [x] Catálogo DCAT — modelo (pydantic) + CkanHarvester + Catalog (busca)
-5. [x] Camada de interoperabilidade — normalize_ibge_code, to_float, per_100k
-6. [x] Orquestrador Dataspace — junção cross-source (ex.: academias_por_100k cruza
-       BHGEO/WFS com IBGE/REST pelo município)
+4. [x] GtfsConnector — GTFS estático (S3, 53 MB) + GTFS-Realtime (protobuf)
+5. [x] Catálogo DCAT — modelo (pydantic) + CkanHarvester + Catalog (busca)
+6. [x] Camada de interoperabilidade — normalize_ibge_code, to_float, per_100k
+7. [x] Orquestrador Dataspace — junções cross-source (academias_por_100k cruza
+       BHGEO/WFS com IBGE/REST; veiculos_ativos lê GTFS-RT)
 
 Pendente:
 - [ ] RESTConnector (PNCP) — com retry/backoff (backend instável)
-- [ ] GtfsConnector — GTFS estático (S3) + GTFS-Realtime (protobuf)
 - [ ] Harvester completo + fichas DCAT das fontes não-CKAN (BHGEO, IBGE, PNCP)
 - [ ] Testes de integração + validação da interoperabilidade (sem 10-11)
 - [ ] API unificada de consulta (para futura UI de demonstração)

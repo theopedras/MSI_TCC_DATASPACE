@@ -25,6 +25,19 @@ def normalize_ibge_code(code: Union[str, int]) -> str:
     return digits
 
 
+def normalize_cnpj(cnpj: Union[str, int]) -> str:
+    """Normaliza um CNPJ para 14 dígitos (remove máscara '18.715.383/0001-40').
+
+    Chave de junção para compras públicas/empresas (PNCP, Receita Federal).
+    """
+    digits = "".join(ch for ch in str(cnpj) if ch.isdigit())
+    if len(digits) != 14:
+        raise ValueError(
+            f"CNPJ inválido: '{cnpj}' -> '{digits}' (esperado 14 dígitos)"
+        )
+    return digits
+
+
 def to_float(value: Any) -> float:
     """Converte valor numérico (str/int/float) para float, tratando formato BR.
 

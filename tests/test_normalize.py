@@ -39,3 +39,17 @@ def test_per_100k():
 def test_per_100k_zero_levanta():
     with pytest.raises(ZeroDivisionError):
         per_100k(10, 0)
+
+
+def test_normalize_cnpj_limpa_mascara():
+    from interoperability import normalize_cnpj
+
+    assert normalize_cnpj("18.715.383/0001-40") == "18715383000140"
+    assert normalize_cnpj(18715383000140) == "18715383000140"
+
+
+def test_normalize_cnpj_valida_14_digitos():
+    from interoperability import normalize_cnpj
+
+    with pytest.raises(ValueError):
+        normalize_cnpj("12345")

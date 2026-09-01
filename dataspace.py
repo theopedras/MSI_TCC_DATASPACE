@@ -17,7 +17,7 @@ from catalog import Catalog, CkanHarvester, Dataset
 from connectors.ckan import CkanConnector
 from connectors.gtfs import GtfsConnector
 from connectors.ogc import OgcConnector
-from connectors.rest import BH_IBGE_CODE, IbgeConnector
+from connectors.rest import BH_IBGE_CODE, IbgeConnector, PncpConnector
 from interoperability import normalize_ibge_code, per_100k, to_float
 
 # Agregado 6579 = "População residente estimada", variável 9324.
@@ -33,6 +33,7 @@ class Dataspace:
         self.ogc = OgcConnector()
         self.ibge = IbgeConnector()
         self.gtfs = GtfsConnector()
+        self.pncp = PncpConnector()
         self.catalog = Catalog()
         self.ckan_harvester = CkanHarvester(self.ckan)
 

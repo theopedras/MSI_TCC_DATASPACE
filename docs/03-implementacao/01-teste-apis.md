@@ -128,9 +128,13 @@ Resultado: API alcançável (DNS/TLS OK), mas backend instável no momento do te
 - GET /api/consulta/v1/orgaos -> 504 Gateway Timeout após ~70s
 - GET /api/consulta/v1/orgaos/18715383000140 -> sem resposta em 60s
 - Raiz pncp.gov.br -> 302 para www.gov.br/pncp
+- Swagger UI também inacessível (mesmo servidor).
 
-Implicação: conector PNCP precisa de timeout agressivo + retry/backoff. Documentar como
-fonte "intermitente" até nova verificação.
+Implicação: conector PNCP (connectors/rest/pncp.py) usa timeout curto (20s, falha
+rápido) + retry/backoff (2s) herdados de BaseConnector. Confirmado que falha
+graciosamente (~21s p/ 2 tentativas) em vez de travar. Documentar como fonte
+"intermitente" até nova verificação; endpoints além de orgaos/orgao/{cnpj} são
+citados no Manual v2.5 mas ainda não verificados contra a API viva.
 
 ## 5. Correções ao mapeamento (docx da Etapa 1)
 
